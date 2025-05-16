@@ -21,6 +21,8 @@ export function CodeEditor() {
         theme="vs-dark"
         options={{
           minimap: { enabled: false },
+          fontFamily: 'Fira Code, monospace',
+          fontLigatures: true,
           fontSize: 14,
           wordWrap: 'on',
           scrollBeyondLastLine: false,

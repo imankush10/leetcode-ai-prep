@@ -60,6 +60,9 @@ interface InterviewState {
   setLeftPanelWidth: (width: number) => void;
   runTestCase: (id: number) => void;
   setSelectedTestCase: (id: number | null) => void;
+  isAISpeaking: boolean;
+  setAISpeaking: (isSpeaking: boolean) => void;
+  runAllTestCases: () => void;
 }
 
 export const useInterviewStore = create<InterviewState>((set) => ({
@@ -68,8 +71,8 @@ export const useInterviewStore = create<InterviewState>((set) => ({
   isTimerRunning: false,
 
   // Editor
-  code: "",
-  language: "javascript",
+  code: `#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    cout << "Hello, World!";\n    return 0;\n}`,
+  language: "cpp",
 
   // Interview state
   currentPhase: "introduction",
@@ -124,6 +127,8 @@ export const useInterviewStore = create<InterviewState>((set) => ({
       problem,
       testCases: problem.testCases,
     })),
+  isAISpeaking: true,
+  setAISpeaking: (isAISpeaking) => set({ isAISpeaking }),
 
   setLeftPanelWidth: (width) => set({ leftPanelWidth: width }),
 
@@ -143,6 +148,19 @@ export const useInterviewStore = create<InterviewState>((set) => ({
         return tc;
       });
 
+      return { testCases: updatedTestCases };
+    }),
+  runAllTestCases: () =>
+    set((state) => {
+      const updatedTestCases = state.testCases.map((tc) => {
+        // In a real app, this would run the code against all test cases
+        const passed = Math.random() > 0.3; // Simulate results
+        return {
+          ...tc,
+          result: passed ? "pass" : "fail",
+          output: passed ? tc.expectedOutput : "Failed output",
+        };
+      });
       return { testCases: updatedTestCases };
     }),
 
