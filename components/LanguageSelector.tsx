@@ -6,14 +6,9 @@ import { Button } from './ui/button';
 
 const languages = [
   { id: 'javascript', name: 'JavaScript' },
-  { id: 'typescript', name: 'TypeScript' },
   { id: 'python', name: 'Python' },
   { id: 'java', name: 'Java' },
-  { id: 'c', name: 'C' },
   { id: 'cpp', name: 'C++' },
-  { id: 'csharp', name: 'C#' },
-  { id: 'go', name: 'Go' },
-  { id: 'ruby', name: 'Ruby' },
 ];
 
 export function LanguageSelector() {

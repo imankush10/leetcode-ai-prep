@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import { useInterviewStore } from "@/store/interviewStore";
-import { sampleProblem } from "@/data/sampleProblem";
 import { ProblemDescription } from "@/components/ProblemDescription";
 import { CodeEditor } from "@/components/CodeEditor";
 import { LanguageSelector } from "@/components/LanguageSelector";
@@ -15,25 +14,51 @@ import { PanelGroup, Panel, PanelResizeHandle } from "react-resizable-panels";
 import { Timer } from "@/components/Timer";
 
 export default function Page() {
-  const { problem, setProblem } = useInterviewStore();
+  const { problem, fetchRandomProblem, isLoadingProblem } = useInterviewStore();
 
-  // Load the sample problem on mount
+  // Fetch a random problem on mount
   useEffect(() => {
-    if (!problem) setProblem(sampleProblem);
-  }, [problem, setProblem]);
+    if (!problem) {
+      fetchRandomProblem();
+    }
+  }, [problem, fetchRandomProblem]);
+
+  // Show loading state while fetching problem
+  if (isLoadingProblem && !problem) {
+    return (
+      <main className="h-screen w-screen bg-background text-foreground flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-lg">Loading interview problem...</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="h-screen w-screen bg-background text-foreground">
       <div className="flex flex-col h-full">
-        {/* Header - Now cleaner with fewer items */}
         <header className="flex items-center justify-between px-6 py-3 border-b border-border bg-card">
           <div className="flex items-center gap-4">
             <span className="text-xl font-bold">AI LeetCode Interviewer</span>
+            {problem && (
+              <span className="text-sm text-muted-foreground">
+                Problem: {problem.title} ({problem.difficulty})
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-3">
             <Timer />
             <ThemeToggle />
             <LanguageSelector />
+            {/* Optional: Add a button to fetch new problem */}
+            <button
+              onClick={() => fetchRandomProblem()}
+              className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded hover:bg-secondary/80"
+              disabled={isLoadingProblem}
+            >
+              {isLoadingProblem ? 'Loading...' : 'New Problem'}
+            </button>
           </div>
         </header>
 
@@ -46,18 +71,15 @@ export default function Page() {
             maxSize={60}
             className="min-w-[300px] flex flex-col h-full bg-card border-r border-border"
           >
-            {/* Problem description takes most of the space */}
             <div className="flex-1 min-h-0 overflow-auto">
               <ProblemDescription />
             </div>
-            
-            {/* AI Avatar and Submit button at bottom */}
             <div className="border-t border-border p-3 flex items-center justify-between">
               <AIAvatar />
               <RunCode />
             </div>
           </Panel>
-          
+
           <PanelResizeHandle className="w-2 cursor-col-resize bg-border hover:bg-primary transition-colors" />
 
           {/* Right Panel: Code + Test Cases */}

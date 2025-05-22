@@ -4,9 +4,12 @@ import { formatTime } from "@/lib/utils";
 import { Clock } from "lucide-react";
 
 export function Timer() {
-  const { timeRemaining, isTimerRunning, decrementTimer } = useInterviewStore();
+  const { timeRemaining, isTimerRunning, decrementTimer, startTimer } =
+    useInterviewStore();
 
   useEffect(() => {
+    startTimer();
+
     let interval: NodeJS.Timeout | null = null;
 
     if (isTimerRunning) {

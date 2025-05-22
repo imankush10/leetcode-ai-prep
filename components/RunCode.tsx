@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button } from './ui/button';
-import { Play } from 'lucide-react';
+import { Play, Loader2 } from 'lucide-react';
 import { useInterviewStore } from '@/store/interviewStore';
 
 export function RunCode() {
-  const { code, language, runAllTestCases } = useInterviewStore();
+  const { code, runAllTestCases, isRunningCode } = useInterviewStore();
   
   const handleRunCode = () => {
     runAllTestCases();
@@ -14,10 +14,14 @@ export function RunCode() {
     <Button 
       onClick={handleRunCode} 
       className="flex items-center gap-2"
-      disabled={!code.trim()}
+      disabled={!code.trim() || isRunningCode}
     >
-      <Play size={16} />
-      Run Code
+      {isRunningCode ? (
+        <Loader2 size={16} className="animate-spin" />
+      ) : (
+        <Play size={16} />
+      )}
+      {isRunningCode ? 'Running...' : 'Run Code'}
     </Button>
   );
 }
