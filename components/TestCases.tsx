@@ -15,23 +15,34 @@ export function TestCases() {
     useInterviewStore();
 
   if (!problem || !problem.testCases) {
-    return <div className="p-4">No test cases available</div>;
+    return (
+      <div className="h-full flex items-center justify-center p-4">
+        <div className="text-muted-foreground">No test cases available</div>
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-col h-full overflow-y-scroll scroll hide-scrollbar">
-      <Tabs defaultValue="testcases" className="w-full">
-        <TabsList className="w-full">
-          <TabsTrigger value="testcases" className="flex-1">
+    <div className="flex flex-col h-full overflow-hidden">
+      <Tabs
+        defaultValue="testcases"
+        className="w-full h-full flex flex-col overflow-hidden"
+      >
+        <TabsList className="w-full flex-shrink-0 ">
+          <TabsTrigger value="testcases" className="flex-1 ">
             Test Cases
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="testcases" className="h-full overflow-auto">
-          <div className="space-y-2 p-2">
+        <TabsContent
+          value="testcases"
+          className="flex-1 min-h-0 overflow-hidden"
+        >
+          <div className="h-full overflow-y-auto p-2 space-y-2 hide-scrollbar">
             {problem.testCases.map((testCase, index) => {
-              const testResult: Judge0TestResult | undefined =
-                (testResults as Judge0TestResult[])?.[index]; // Type assertion
+              const testResult: Judge0TestResult | undefined = (
+                testResults as Judge0TestResult[]
+              )?.[index];
 
               const isSelected = selectedTestCase === index;
 
@@ -75,7 +86,7 @@ export function TestCases() {
                     <div className="mt-3 space-y-2 text-sm">
                       <div>
                         <div className="text-muted-foreground mb-1">Input:</div>
-                        <pre className="bg-secondary/50 p-2 rounded overflow-x-auto">
+                        <pre className="bg-secondary/50 p-2 rounded overflow-x-auto text-xs">
                           {testCase.input}
                         </pre>
                       </div>
@@ -83,31 +94,31 @@ export function TestCases() {
                         <div className="text-muted-foreground mb-1">
                           Expected Output:
                         </div>
-                        <pre className="bg-secondary/50 p-2 rounded overflow-x-auto">
+                        <pre className="bg-secondary/50 p-2 rounded overflow-x-auto text-xs">
                           {testCase.expectedOutput}
                         </pre>
                       </div>
-                      {testResult?.output !== null && testResult?.output !== undefined && (
-                        <div>
-                          <div className="text-muted-foreground mb-1">
-                            Your Output:
+                      {testResult?.output !== null &&
+                        testResult?.output !== undefined && (
+                          <div>
+                            <div className="text-muted-foreground mb-1">
+                              Your Output:
+                            </div>
+                            <pre
+                              className={`p-2 rounded overflow-x-auto text-xs ${
+                                testResult.result === "pass"
+                                  ? "bg-green-500/10 border border-green-500/20"
+                                  : "bg-red-500/10 border border-red-500/20"
+                              }`}
+                            >
+                              {testResult.output}
+                            </pre>
                           </div>
-                          <pre
-                            className={`p-2 rounded overflow-x-auto ${
-                              testResult.result === "pass"
-                                ? "bg-green-500/10 border border-green-500/20"
-                                : "bg-red-500/10 border border-red-500/20"
-                            }`}
-                          >
-                            {testResult.output}
-                          </pre>
-                        </div>
-                      )}
-                      {/* Display error if the test case failed and there's an output (which might contain error info) */}
+                        )}
                       {testResult?.result === "fail" && testResult?.output && (
                         <div>
                           <div className="text-red-500 mb-1">Error:</div>
-                          <pre className="bg-red-500/10 border border-red-500/20 p-2 rounded overflow-x-auto text-red-400">
+                          <pre className="bg-red-500/10 border border-red-500/20 p-2 rounded overflow-x-auto text-red-400 text-xs">
                             {testResult.output}
                           </pre>
                         </div>
