@@ -168,3 +168,6 @@ body {
 .monaco-editor .margin {
   background-color: #1e1e1e !important;
 }
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

@@ -29,6 +29,7 @@ interface Problem {
   constraints: string[];
   difficulty: ProblemDifficulty;
   testCases: TestCase[];
+  url?: string;
 }
 
 interface InterviewState {

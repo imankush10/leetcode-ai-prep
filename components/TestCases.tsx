@@ -8,7 +8,7 @@ export function TestCases() {
   const { testCases, runTestCase, selectedTestCase, setSelectedTestCase } = useInterviewStore();
   
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full overflow-y-scroll scroll hide-scrollbar">
       <Tabs defaultValue="testcases" className="w-full">
         <TabsList className="w-full">
           <TabsTrigger value="testcases" className="flex-1">Test Cases</TabsTrigger>
