@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Problem, TestCase } from "@/lib/problems";
 
+// ===== INTERFACES =====
 interface AIMessage {
   id: number;
   content: string;
@@ -8,183 +9,195 @@ interface AIMessage {
   timestamp: Date;
 }
 
+interface TestResult {
+  input: string;
+  expectedOutput: string;
+  result: "pass" | "fail" | "running";
+  output: string | null;
+}
+
 interface InterviewState {
-  // Timer
+  // ===== TIMER STATE =====
   timeRemaining: number;
   isTimerRunning: boolean;
-  // Editor
+
+  // ===== CODE EDITOR STATE =====
   code: string;
   language: string;
-  // Interview state
-  currentPhase: "introduction" | "coding" | "discussion";
+
+  // ===== PROBLEM STATE =====
   problem: Problem | null;
-  aiMessages: AIMessage[];
-  // Test cases
-  testCases: TestCase[];
-  testResults: {
-    input: string;
-    expectedOutput: string;
-    result: "pass" | "fail" | "running";
-    output: string | null;
-  }[];
-  selectedTestCase: number | null;
-  // UI state
-  leftPanelWidth: number;
   isLoadingProblem: boolean;
+
+  // ===== TEST EXECUTION STATE =====
+  testCases: TestCase[];
+  testResults: TestResult[];
+  selectedTestCase: number | null;
   isRunningCode: boolean;
-  // Actions
-  setCode: (code: string) => void;
-  setLanguage: (language: string) => void;
+
+  // ===== AI INTERVIEW STATE (DUMMY - TO BE IMPLEMENTED) =====
+  currentPhase: "introduction" | "coding" | "discussion";
+  aiMessages: AIMessage[];
+  isAISpeaking: boolean;
+
+  // ===== UI STATE =====
+  leftPanelWidth: number;
+
+  // ===== TIMER ACTIONS =====
   startTimer: () => void;
   pauseTimer: () => void;
   resetTimer: () => void;
   decrementTimer: () => void;
+
+  // ===== CODE EDITOR ACTIONS =====
+  setCode: (code: string) => void;
+  setLanguage: (language: string) => void;
+
+  // ===== PROBLEM ACTIONS =====
+  fetchRandomProblem: () => Promise<void>;
+  setProblem: (problem: Problem) => void;
+  setLoading: (loading: boolean) => void;
+
+  // ===== TEST EXECUTION ACTIONS =====
+  runAllTestCases: () => Promise<void>;
+  setSelectedTestCase: (id: number | null) => void;
+
+  // ===== AI INTERVIEW ACTIONS (DUMMY - TO BE IMPLEMENTED) =====
   addAIMessage: (content: string, sender: "ai" | "user") => void;
   setPhase: (phase: "introduction" | "coding" | "discussion") => void;
-  setProblem: (problem: Problem) => void;
-  setLeftPanelWidth: (width: number) => void;
-  setSelectedTestCase: (id: number | null) => void;
-  isAISpeaking: boolean;
   setAISpeaking: (isSpeaking: boolean) => void;
-  runAllTestCases: () => Promise<void>; // Changed to Promise<void> as it's async
-  fetchRandomProblem: () => Promise<void>;
-  setLoading: (loading: boolean) => void;
+
+  // ===== UI ACTIONS =====
+  setLeftPanelWidth: (width: number) => void;
 }
 
 export const useInterviewStore = create<InterviewState>((set, get) => ({
-  // Timer - 20 minutes in seconds
-  timeRemaining: 20 * 60,
+  // ===== TIMER INITIAL STATE =====
+  timeRemaining: 20 * 60, // 20 minutes in seconds
   isTimerRunning: false,
 
-  // Editor
+  // ===== CODE EDITOR INITIAL STATE =====
   code: "",
   language: "cpp",
 
-  // Interview state
-  currentPhase: "introduction",
+  // ===== PROBLEM INITIAL STATE =====
   problem: null,
+  isLoadingProblem: false,
+
+  // ===== TEST EXECUTION INITIAL STATE =====
+  testCases: [],
+  testResults: [],
+  selectedTestCase: null,
+  isRunningCode: false,
+
+  // ===== AI INTERVIEW INITIAL STATE (DUMMY) =====
+  currentPhase: "introduction",
   aiMessages: [
     {
       id: 1,
-      content:
-        "Hello! I'm your AI interviewer today. We have 20 minutes to solve one coding problem. I'll be here to help if you need any clarification. Are you ready to begin?",
+      content: "Hello! I'm your AI interviewer today. We have 20 minutes to solve one coding problem. I'll be here to help if you need any clarification. Are you ready to begin?",
       sender: "ai",
       timestamp: new Date(),
     },
   ],
+  isAISpeaking: false,
 
-  // Test cases
-  testCases: [],
-  testResults: [], // <-- ADD THIS LINE
-  selectedTestCase: null,
-
-  // UI state
+  // ===== UI INITIAL STATE =====
   leftPanelWidth: 65,
-  isLoadingProblem: false,
-  isRunningCode: false,
 
-  // Actions
-  fetchRandomProblem: async () => {
-    try {
-      set({ isLoadingProblem: true });
-      const response = await fetch("/api/problems?random=true");
-      if (!response.ok) {
-        // It's good practice to check response.ok
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-
-      if (data.success) {
-        const state = get();
-        const problem = data.data as Problem; // Add type assertion if necessary
-
-        // Ensure we have a valid language for this problem
-        const availableLanguages = Object.keys(problem.languages);
-        const languageToUse = availableLanguages.includes(state.language) // More robust check
-          ? state.language
-          : availableLanguages[0] || "cpp"; // Fallback if no languages
-
-        set({
-          problem: problem,
-          testCases: problem.testCases || [], // Ensure testCases is always an array
-          code: problem.languages[languageToUse]?.boilerplate || "",
-          language: languageToUse,
-          currentPhase: "coding",
-          testResults: [], // Reset test results when a new problem is fetched
-          selectedTestCase: null, // Reset selected test case
-        });
-      } else {
-        console.error(
-          "Failed to fetch problem:",
-          data.error || "Unknown error"
-        );
-        // Optionally, set an error state in the store
-      }
-    } catch (error) {
-      console.error("Error fetching random problem:", error);
-      // Optionally, set an error state in the store
-    } finally {
-      set({ isLoadingProblem: false });
-    }
-  },
-  setCode: (code) => set({ code }),
-
+  // ===== TIMER ACTIONS =====
   startTimer: () => set({ isTimerRunning: true }),
+  
   pauseTimer: () => set({ isTimerRunning: false }),
-  resetTimer: () => set({ timeRemaining: 20 * 60, isTimerRunning: false }), // Also reset isTimerRunning
+  
+  resetTimer: () => set({ 
+    timeRemaining: 20 * 60, 
+    isTimerRunning: false 
+  }),
+  
   decrementTimer: () =>
     set((state) => {
       const newTimeRemaining = Math.max(0, state.timeRemaining - 1);
       return {
         timeRemaining: newTimeRemaining,
-        isTimerRunning: newTimeRemaining > 0 ? state.isTimerRunning : false, // Stop timer if time is 0
+        isTimerRunning: newTimeRemaining > 0 ? state.isTimerRunning : false,
       };
     }),
 
-  addAIMessage: (content, sender) =>
-    set((state) => ({
-      aiMessages: [
-        ...state.aiMessages,
-        {
-          id: state.aiMessages.length + 1, // Consider a more robust ID generation if messages can be deleted
-          content,
-          sender,
-          timestamp: new Date(),
-        },
-      ],
-    })),
-
-  setPhase: (phase) => set({ currentPhase: phase }),
-
+  // ===== CODE EDITOR ACTIONS =====
+  setCode: (code) => set({ code }),
+  
   setLanguage: (language) =>
     set((state) => {
       const newCode = state.problem?.languages[language]?.boilerplate || "";
       return { language, code: newCode };
     }),
 
+  // ===== PROBLEM ACTIONS =====
+  fetchRandomProblem: async () => {
+    try {
+      set({ isLoadingProblem: true });
+      
+      const response = await fetch("/api/problems?random=true");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      if (data.success) {
+        const state = get();
+        const problem = data.data as Problem;
+
+        // Determine language to use
+        const availableLanguages = Object.keys(problem.languages);
+        const languageToUse = availableLanguages.includes(state.language)
+          ? state.language
+          : availableLanguages[0] || "cpp";
+
+        set({
+          problem: problem,
+          testCases: problem.testCases || [],
+          code: problem.languages[languageToUse]?.boilerplate || "",
+          language: languageToUse,
+          currentPhase: "coding",
+          testResults: [],
+          selectedTestCase: null,
+        });
+      } else {
+        console.error("Failed to fetch problem:", data.error || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Error fetching random problem:", error);
+    } finally {
+      set({ isLoadingProblem: false });
+    }
+  },
+
   setProblem: (problem) =>
     set((state) => {
       if (!problem || !problem.languages) {
         return {
           problem,
-          testCases: problem?.testCases || [], // Ensure testCases is always an array
+          testCases: problem?.testCases || [],
           code: "",
-          testResults: [], // Reset test results
+          testResults: [],
           selectedTestCase: null,
         };
       }
+
       const availableLanguages = Object.keys(problem.languages);
       if (availableLanguages.length === 0) {
         return {
           problem,
           testCases: problem.testCases || [],
           code: "",
-          language: "cpp", // Default language if none available for problem
+          language: "cpp",
           testResults: [],
           selectedTestCase: null,
         };
       }
-      const currentLanguage = state.language || "cpp"; // Use state's language or fallback
+
+      const currentLanguage = state.language || "cpp";
       const languageToUse = availableLanguages.includes(currentLanguage)
         ? currentLanguage
         : availableLanguages[0];
@@ -194,18 +207,14 @@ export const useInterviewStore = create<InterviewState>((set, get) => ({
         testCases: problem.testCases || [],
         language: languageToUse,
         code: problem.languages[languageToUse]?.boilerplate || "",
-        testResults: [], // Reset test results
+        testResults: [],
         selectedTestCase: null,
       };
     }),
 
-  isAISpeaking: true, // Initial state for isAISpeaking
-  setAISpeaking: (isAISpeaking) => set({ isAISpeaking }),
+  setLoading: (loading) => set({ isLoadingProblem: loading }),
 
-  setLeftPanelWidth: (width) => set({ leftPanelWidth: width }),
-
-  setLoading: (loading) => set({ isLoadingProblem: loading }), // isLoadingProblem or a general loading state?
-
+  // ===== TEST EXECUTION ACTIONS =====
   runAllTestCases: async () => {
     const state = get();
     if (!state.problem || !state.code.trim() || !state.problem.testCases) {
@@ -216,20 +225,18 @@ export const useInterviewStore = create<InterviewState>((set, get) => ({
     try {
       set({ isRunningCode: true });
 
-      // Set loading state - use Judge0 format
-      const loadingResults = state.problem.testCases.map((testCase, index) => ({
+      // Set loading state for all test cases
+      const loadingResults = state.problem.testCases.map((testCase) => ({
         input: testCase.input,
         expectedOutput: testCase.expectedOutput,
-        result: "running" as "running",
+        result: "running" as const,
         output: "Running...",
       }));
       set({ testResults: loadingResults });
 
       const response = await fetch("/api/execute", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           problemId: state.problem.id,
           language: state.language,
@@ -241,38 +248,23 @@ export const useInterviewStore = create<InterviewState>((set, get) => ({
         const errorData = await response
           .json()
           .catch(() => ({ error: `HTTP error! status: ${response.status}` }));
-        throw new Error(
-          errorData.error || `HTTP error! status: ${response.status}`
-        );
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-
       if (data.success && Array.isArray(data.testResults)) {
         set({ testResults: data.testResults });
       } else {
-        const errorMessage = data.error || "Execution failed";
-        console.error("Execution error:", data);
-
-        // Create error results in Judge0 format
-        const errorResults = state.problem.testCases.map((testCase) => ({
-          input: testCase.input,
-          expectedOutput: testCase.expectedOutput,
-          result: "fail" as "fail",
-          output: null,
-        }));
-        set({ testResults: errorResults });
+        throw new Error(data.error || "Execution failed");
       }
     } catch (error: any) {
       console.error("Error running test cases:", error);
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-
-      // Create error results in Judge0 format
+      
+      // Create error results for all test cases
       const errorResults = state.problem.testCases.map((testCase) => ({
         input: testCase.input,
         expectedOutput: testCase.expectedOutput,
-        result: "fail" as "fail",
+        result: "fail" as const,
         output: null,
       }));
       set({ testResults: errorResults });
@@ -282,4 +274,25 @@ export const useInterviewStore = create<InterviewState>((set, get) => ({
   },
 
   setSelectedTestCase: (id) => set({ selectedTestCase: id }),
+
+  // ===== AI INTERVIEW ACTIONS (DUMMY - TO BE IMPLEMENTED) =====
+  addAIMessage: (content, sender) =>
+    set((state) => ({
+      aiMessages: [
+        ...state.aiMessages,
+        {
+          id: state.aiMessages.length + 1,
+          content,
+          sender,
+          timestamp: new Date(),
+        },
+      ],
+    })),
+
+  setPhase: (phase) => set({ currentPhase: phase }),
+
+  setAISpeaking: (isSpeaking) => set({ isAISpeaking: isSpeaking }),
+
+  // ===== UI ACTIONS =====
+  setLeftPanelWidth: (width) => set({ leftPanelWidth: width }),
 }));
