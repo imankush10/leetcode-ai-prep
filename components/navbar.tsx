@@ -14,11 +14,11 @@ export default function Navbar() {
     <div className="h-24">
       {" "}
       {/* This creates the top margin/spacing */}
-      <nav className="fixed top-2 left-1/2 transform -translate-x-1/2 z-50 w-[90%] rounded-md">
+      <nav className="fixed top-1 left-1/2 transform -translate-x-1/2 z-50 w-[90%] rounded-md">
         {/* Glassmorphism background with gradient blur */}
         <div className="absolute inset-0 backdrop-blur-md rounded-md"></div>
 
-        <div className="relative flex h-24 items-center justify-between px-6">
+        <div className="relative flex h-20 items-center justify-between px-6">
           {/* Left side - Logo and Navigation Links */}
           <div className="flex items-center space-x-8">
             {/* Logo */}

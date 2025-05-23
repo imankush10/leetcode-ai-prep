@@ -4,6 +4,8 @@ import FeaturesSection from "@/components/features-section"
 import PricingSection from "@/components/pricing-section"
 import TestimonialsSection from "@/components/testimonials-section"
 import Footer from "@/components/footer"
+import { Carousel } from "@/components/ui/carousel"
+import CarouselFeatures from "@/components/CarouselFeatures"
 
 export default function Home() {
   return (
