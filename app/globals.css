@@ -2,97 +2,75 @@
 @import "tw-animate-css";
 @plugin "tailwindcss-animate";
 
-/* Custom dark variant for Tailwind v4 */
 @custom-variant dark (&:is(.dark *));
 
-/* Tailwind v4 theme variables and utility mapping */
 @theme inline {
-  /* Color utilities mapped to your CSS variables */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Border radius utilities */
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  /* Font family */
   --font-sans: var(--font-mona-sans, sans-serif);
 
-  /* Example: custom animation keyframes (optional) */
   @keyframes accordion-down {
-    from { height: 0 }
-    to { height: var(--radix-accordion-content-height) }
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
   }
   @keyframes accordion-up {
-    from { height: var(--radix-accordion-content-height) }
-    to { height: 0 }
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
   }
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
 }
 
-/* Design tokens and theme values */
 :root {
   --font-mona-sans: "Mona Sans", sans-serif;
-
+  --font-supreme: var(--font-supreme), sans-serif;
   --radius: 0.625rem;
+  --animation-speed: 6s; /* Added missing variable */
 
   /* Light theme colors */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
-
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
-
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
-
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
 
-  /* Example chart and sidebar colors */
+  /* Chart colors - KEEP ONLY THESE (removed duplicates) */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -111,32 +89,23 @@
   --bg-pattern: url("/pattern.png");
 }
 
-/* Dark mode overrides */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
-
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
-
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
-
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
-
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
@@ -155,19 +124,71 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
 }
 
-/* Base styles */
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-mona-sans, sans-serif);
+  font-family: var(--font-supreme), var(--font-mona-sans, sans-serif);
 }
 
-/* Monaco Editor dark override */
 .monaco-editor,
 .monaco-editor-background,
 .monaco-editor .margin {
   background-color: #1e1e1e !important;
 }
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+.fancy-link {
+  @apply relative inline-flex h-11 cursor-pointer items-center justify-center rounded border-0 px-8 py-2 text-sm font-medium text-black transition-colors;
+  animation: rainbow 30s ease-in-out infinite;
+ background-image: 
+    linear-gradient(#fafafa, #fafafa),
+    linear-gradient(#fafafa 50%, rgba(250,250,250,0.6) 80%, rgba(250,250,250,0)),
+    linear-gradient(90deg, var(--chart-1), var(--chart-5), var(--chart-3), var(--chart-4), var(--chart-2));
+
+  background-size: 200%;
+  background-origin: border-box;
+  background-clip: padding-box, border-box, border-box;
+  border: 0.08rem solid transparent;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 1px var(--ring); /* Fixed invalid ring property */
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    left: 50%;
+    z-index: 0;
+    height: 20%;
+    width: 60%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--chart-1), var(--chart-5), var(--chart-3), var(--chart-4), var(--chart-2));
+    background-size: 200%;
+    filter: blur(0.8rem);
+    animation: rainbow var(--animation-speed) infinite;
+  }
+}
+
+.dark .fancy-link {
+  background-image: 
+    linear-gradient(#fff, #fff),
+    linear-gradient(#fff 50%, rgba(255,255,255,0.6) 80%, rgba(0,0,0,0)),
+    linear-gradient(90deg, var(--chart-1), var(--chart-5), var(--chart-3), var(--chart-4), var(--chart-2));
 }
