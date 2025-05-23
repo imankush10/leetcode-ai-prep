@@ -453,7 +453,6 @@ export default function HeroSection() {
           </motion.div>
 
           {/* Enhanced CTA buttons */}
-
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -470,7 +469,7 @@ export default function HeroSection() {
 
         {/* Enhanced feature highlights */}
         <motion.div
-          className="mt-24 text-center"
+          className="text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.5, duration: 1 }}
