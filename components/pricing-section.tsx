@@ -1,19 +1,48 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Check } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
-import { useAuth } from "@/lib/auth-context"
-import { motion } from "framer-motion"
+import { useState } from "react";
+import { Check, Sparkles, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { motion } from "framer-motion";
+
+function FloatingPricingElements() {
+  const elements = [
+    { left: "10%", top: "20%", delay: 0 },
+    { left: "85%", top: "15%", delay: 2 },
+    { left: "15%", top: "70%", delay: 4 },
+    { left: "90%", top: "80%", delay: 6 },
+  ];
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {elements.map((element, index) => (
+        <motion.div
+          key={index}
+          className="absolute w-1 h-1 bg-purple-400/30 rounded-full"
+          style={{
+            left: element.left,
+            top: element.top,
+          }}
+          animate={{
+            y: [-10, -20, -10],
+            opacity: [0.3, 0.7, 0.3],
+            scale: [0.5, 1, 0.5],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            delay: element.delay,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function PricingSection() {
-  const [isYearly, setIsYearly] = useState(false)
-  const { showAuthModal } = useAuth()
-
-  const handleSubscribe = () => {
-    showAuthModal("signup")
-  }
+  const [isYearly, setIsYearly] = useState(false);
 
   const tiers = [
     {
@@ -29,7 +58,10 @@ export default function PricingSection() {
         "Email support",
       ],
       highlighted: false,
-      buttonVariant: "outline" as const,
+      gradient: "from-blue-500/10 to-purple-500/10",
+      iconColor: "text-blue-400",
+      borderColor: "border-blue-500/20",
+      hoverBorder: "hover:border-blue-500/40",
     },
     {
       name: "Professional",
@@ -45,7 +77,10 @@ export default function PricingSection() {
         "Priority email support",
       ],
       highlighted: true,
-      buttonVariant: "default" as const,
+      gradient: "from-purple-500/10 to-pink-500/10",
+      iconColor: "text-purple-400",
+      borderColor: "border-purple-500/30",
+      hoverBorder: "hover:border-purple-500/50",
     },
     {
       name: "Expert",
@@ -63,127 +98,279 @@ export default function PricingSection() {
         "Mock interviews with personalized feedback",
       ],
       highlighted: false,
-      buttonVariant: "outline" as const,
+      gradient: "from-green-500/10 to-emerald-500/10",
+      iconColor: "text-green-400",
+      borderColor: "border-green-500/20",
+      hoverBorder: "hover:border-green-500/40",
     },
-  ]
-
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  }
+  ];
 
   return (
-    <section id="pricing" className="py-20">
-      <div className="container mx-auto px-4">
+    <section id="pricing" className="relative py-4 bg-black overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-[0.02]">
+        <div className="h-full w-full bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:80px_80px]" />
+      </div>
+
+      {/* Floating elements */}
+      <FloatingPricingElements />
+
+      <div className="container relative z-10 mx-auto px-4">
+        {/* Section header */}
         <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.8 }}
         >
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-            <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-              Choose Your Plan
-            </span>
-          </h2>
-          <p className="mx-auto max-w-2xl text-gray-400">
-            Select the perfect plan to match your interview preparation needs
-          </p>
-
+          {/* Status badge */}
           <motion.div
-            className="mt-8 flex items-center justify-center space-x-2"
+            className="inline-flex items-center space-x-3 bg-white/[0.06] border border-white/10 rounded-full px-6 py-3 backdrop-blur-xl mb-8"
+            whileHover={{
+              backgroundColor: "rgba(255, 255, 255, 0.08)",
+              borderColor: "rgba(255, 255, 255, 0.2)",
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            >
+              <Star className="w-4 h-4 text-purple-400" />
+            </motion.div>
+            <span className="text-white/80 text-sm font-medium">
+              Flexible Pricing Plans
+            </span>
+          </motion.div>
+
+          {/* Main heading */}
+          <motion.h2
+            className="text-4xl md:text-5xl font-medium text-white mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Choose your{" "}
+            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 bg-clip-text text-transparent">
+              interview journey
+            </span>
+          </motion.h2>
+
+          <motion.p
+            className="text-white/60 text-lg max-w-2xl mx-auto mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            Select the perfect plan to match your interview preparation needs
+            and career goals
+          </motion.p>
+
+          {/* Pricing toggle */}
+          <motion.div
+            className="flex items-center justify-center space-x-4"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.5 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
           >
-            <span className={`text-sm ${!isYearly ? "text-white" : "text-gray-400"}`}>Monthly</span>
-            <Switch checked={isYearly} onCheckedChange={setIsYearly} className="data-[state=checked]:bg-purple-600" />
-            <span className={`text-sm ${isYearly ? "text-white" : "text-gray-400"}`}>
-              Yearly <span className="rounded-full bg-purple-600 px-2 py-0.5 text-xs font-medium">Save 20%+</span>
+            <span
+              className={`text-sm font-medium ${
+                !isYearly ? "text-white" : "text-white/60"
+              }`}
+            >
+              Monthly
             </span>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Switch
+                checked={isYearly}
+                onCheckedChange={setIsYearly}
+                className="data-[state=checked]:bg-purple-500"
+              />
+            </motion.div>
+            <span
+              className={`text-sm font-medium ${
+                isYearly ? "text-white" : "text-white/60"
+              }`}
+            >
+              Yearly
+            </span>
+            <motion.span
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-medium px-3 py-1 rounded-full"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Save 20%+
+            </motion.span>
           </motion.div>
         </motion.div>
 
+        {/* Pricing cards */}
         <motion.div
-          className="grid gap-8 md:grid-cols-3"
-          variants={container}
-          initial="hidden"
-          whileInView="show"
+          className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.8 }}
         >
           {tiers.map((tier, index) => (
             <motion.div
               key={index}
-              variants={item}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              className={`relative rounded-lg border ${
-                tier.highlighted ? "border-purple-500 bg-gray-900" : "border-gray-800 bg-gray-900/50"
-              } p-6 shadow-lg transition-all duration-300 hover:border-purple-500/50 hover:shadow-purple-500/10`}
+              className="relative group h-full"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: index * 0.1 }}
             >
-              {tier.highlighted && (
-                <div className="absolute -top-4 left-0 right-0 mx-auto w-fit rounded-full bg-purple-600 px-3 py-1 text-xs font-medium">
-                  Most Popular
-                </div>
-              )}
-              <div className="mb-4">
-                <h3 className="text-xl font-bold">{tier.name}</h3>
-                <div className="mt-4 flex items-baseline">
-                  <span className="text-4xl font-extrabold">${isYearly ? tier.yearlyPrice : tier.monthlyPrice}</span>
-                  <span className="ml-1 text-gray-400">/{isYearly ? "year" : "month"}</span>
-                </div>
-                <p className="mt-2 text-sm text-gray-400">{tier.description}</p>
-              </div>
-
-              <ul className="mb-6 space-y-3">
-                {tier.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start">
-                    <Check className="mr-2 h-5 w-5 shrink-0 text-green-500" />
-                    <span className="text-sm text-gray-300">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Button
-                variant={tier.buttonVariant}
-                className={`w-full ${
-                  tier.highlighted
-                    ? "bg-purple-600 hover:bg-purple-700"
-                    : "border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white"
-                }`}
-                onClick={handleSubscribe}
+              <motion.div
+                className={`relative h-full bg-white/[0.03] backdrop-blur-xl border ${tier.borderColor} ${tier.hoverBorder} rounded-2xl p-8 overflow-hidden flex flex-col`}
+                whileHover={{
+                  backgroundColor: "rgba(255, 255, 255, 0.06)",
+                  scale: 1.02,
+                  y: -5,
+                }}
+                transition={{ duration: 0.3 }}
               >
-                Get Started
-              </Button>
+                {/* Popular badge */}
+                {tier.highlighted && (
+                  <motion.div
+                    className="absolute top-0 right-0 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-medium px-4 py-2 rounded-full"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    Most Popular
+                  </motion.div>
+                )}
+
+                {/* Gradient background */}
+                <div className="absolute inset-0 opacity-20">
+                  <div
+                    className={`w-full h-full bg-gradient-to-br ${tier.gradient}`}
+                  />
+                </div>
+
+                {/* Floating accent */}
+                <div className="absolute top-6 right-6">
+                  <motion.div
+                    className={`w-2 h-2 rounded-full bg-current ${tier.iconColor}`}
+                    animate={{
+                      scale: [1, 1.5, 1],
+                      opacity: [0.4, 0.8, 0.4],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      delay: index * 0.5,
+                    }}
+                  />
+                </div>
+
+                <div className="relative z-10 flex flex-col h-full">
+                  {/* Header */}
+                  <div className="mb-6">
+                    <h3 className="text-xl font-medium text-white/90 mb-2">
+                      {tier.name}
+                    </h3>
+                    <div className="flex items-baseline mb-3">
+                      <span className="text-4xl font-medium text-white">
+                        ${isYearly ? tier.yearlyPrice : tier.monthlyPrice}
+                      </span>
+                      <span className="ml-2 text-white/60 text-sm">
+                        /{isYearly ? "year" : "month"}
+                      </span>
+                    </div>
+                    <p className="text-white/60 text-sm leading-relaxed">
+                      {tier.description}
+                    </p>
+                  </div>
+
+                  {/* Features - flex-grow to push button to bottom */}
+                  <div className="flex-grow">
+                    <ul className="space-y-3">
+                      {tier.features.map((feature, featureIndex) => (
+                        <motion.li
+                          key={featureIndex}
+                          className="flex items-start"
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{
+                            delay: index * 0.1 + featureIndex * 0.05,
+                          }}
+                        >
+                          <Check className="w-4 h-4 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
+                          <span className="text-white/70 text-sm leading-relaxed">
+                            {feature}
+                          </span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Button - always at bottom */}
+                  <motion.div
+                    className="mt-8"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button
+                      className={`w-full py-3 rounded-xl font-medium transition-all duration-300 ${
+                        tier.highlighted
+                          ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                          : "bg-white/[0.08] hover:bg-white/[0.12] text-white border border-white/20 hover:border-white/40"
+                      }`}
+                    >
+                      Get Started
+                    </Button>
+                  </motion.div>
+                </div>
+              </motion.div>
             </motion.div>
           ))}
         </motion.div>
 
+        {/* Free demo section */}
         <motion.div
-          className="mt-12 rounded-lg border border-gray-800 bg-gray-900/50 p-6 text-center"
-          initial={{ opacity: 0, y: 20 }}
+          className="mt-20 text-center"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.5 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
         >
-          <h3 className="mb-2 text-xl font-bold">Not sure which plan is right for you?</h3>
-          <p className="mb-4 text-gray-400">Try our free demo to experience the platform before making a decision.</p>
-          <Button className="bg-purple-600 hover:bg-purple-700" asChild>
-            <a href="/demo">Try Free Demo</a>
-          </Button>
+          <motion.div
+            className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-2xl p-8 max-w-2xl mx-auto"
+            whileHover={{
+              backgroundColor: "rgba(255, 255, 255, 0.06)",
+              borderColor: "rgba(255, 255, 255, 0.2)",
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 mb-4"
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+            >
+              <Sparkles className="w-6 h-6 text-blue-400" />
+            </motion.div>
+            <h3 className="text-xl font-medium text-white/90 mb-3">
+              Not sure which plan is right for you?
+            </h3>
+            <p className="text-white/60 text-sm mb-6 leading-relaxed">
+              Try our free demo to experience the platform before making a
+              decision. No credit card required.
+            </p>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-8 py-3 rounded-xl font-medium"
+                asChild
+              >
+                <a href="/demo">Try Free Demo</a>
+              </Button>
+            </motion.div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

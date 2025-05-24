@@ -53,10 +53,10 @@ const CarouselFeatures = () => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-16">
+    <div className="w-full max-w-7xl mx-auto px-4 pt-16">
       {/* Feature Buttons */}
       <motion.div
-        className="text-center mb-4"
+        className="text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 1 }}
@@ -95,7 +95,7 @@ const CarouselFeatures = () => {
       </motion.div>
 
       {/* Content Display with Slide Animation */}
-      <div className="relative overflow-hidden rounded-2xl shadow-lg">
+      <div className="relative overflow-hidden rounded-2xl shadow-lg scale-[0.93]">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={activeFeature}

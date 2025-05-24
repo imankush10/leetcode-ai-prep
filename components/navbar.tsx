@@ -24,9 +24,9 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <div className="rounded-md p-1.5">
-               <Image src="/logo.png" width={52} height={52} alt="logo"/>
+                <Image src="/logo.png" width={52} height={52} alt="logo" />
               </div>
-              <span className="text-xl font-bold text-white">MockAI</span>
+              <span className="text-xl font-bold text-white">OnLevel</span>
             </Link>
 
             {/* Navigation Links - Desktop */}
@@ -57,6 +57,7 @@ export default function Navbar() {
             <Button
               variant="ghost"
               className="text-white/80 hover:text-white hover:bg-white/10"
+              onClick={() => showAuthModal()}
             >
               Sign Up
             </Button>

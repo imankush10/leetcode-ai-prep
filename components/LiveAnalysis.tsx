@@ -24,10 +24,6 @@ const LiveAnalysis = () => {
           <div className="flex items-center space-x-3">
             <Brain className="w-8 h-8 text-purple-400" />
             <h3 className="text-2xl font-bold text-white">Live Interview Analysis</h3>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-green-400 text-sm">Analyzing in real-time</span>
-            </div>
           </div>
 
           {/* Performance Metrics - Better Layout */}

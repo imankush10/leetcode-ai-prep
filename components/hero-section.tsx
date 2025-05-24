@@ -109,7 +109,7 @@ export default function HeroSection() {
         <div className="h-full w-full bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:80px_80px]" />
       </motion.div>
 
-      <div className="container relative z-10 mx-auto px-4 pt-4 pb-20">
+      <div className="container relative z-10 mx-auto px-4 pt-4">
         {/* Enhanced status badge */}
         <motion.div
           className="flex justify-center mb-12"
