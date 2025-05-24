@@ -61,7 +61,7 @@ export default function Navbar() {
             >
               Sign Up
             </Button>
-            <RainbowButton>Start Interview</RainbowButton>
+            <RainbowButton>Try Free</RainbowButton>
           </div>
 
           {/* Mobile Menu Button */}

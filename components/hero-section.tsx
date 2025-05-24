@@ -210,7 +210,7 @@ export default function HeroSection() {
             className="group"
           >
             <RainbowButton href="/" className="">
-              Start Interview
+              Start Free Interview
             </RainbowButton>
           </motion.div>
           <CarouselFeatures/>
