@@ -8,8 +8,8 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
-import RainbowButton from "./RainbowButton";
-import CarouselFeatures from "./CarouselFeatures";
+import RainbowButton from "../ui/RainbowButton";
+import CarouselFeatures from "../ui/CarouselFeatures";
 
 function AnimatedGradientBackground() {
   return (

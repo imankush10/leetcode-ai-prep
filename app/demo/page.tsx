@@ -5,7 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Code, Layout, ArrowRight } from "lucide-react"
-import Navbar from "@/components/navbar"
+import Navbar from "@/components/layout/navbar"
 import { motion } from "framer-motion"
 
 export default function DemoPage() {

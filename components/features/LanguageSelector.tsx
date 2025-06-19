@@ -2,7 +2,7 @@ import React from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { useInterviewStore } from '@/store/interviewStore';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 
 const languages = [
   { id: 'javascript', name: 'JavaScript' },

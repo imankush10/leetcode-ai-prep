@@ -1,9 +1,7 @@
-import Navbar from "@/components/navbar";
-import HeroSection from "@/components/hero-section";
-import FeaturesSection from "@/components/features-section";
-import PricingSection from "@/components/pricing-section";
-import { Carousel } from "@/components/ui/carousel";
-import CarouselFeatures from "@/components/CarouselFeatures";
+import Navbar from "@/components/layout/navbar";
+import HeroSection from "@/components/sections/hero-section";
+import FeaturesSection from "@/components/sections/features-section";
+import PricingSection from "@/components/sections/pricing-section";
 
 export default function Home() {
   return (

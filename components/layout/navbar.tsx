@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import RainbowButton from "./RainbowButton";
+import RainbowButton from "../ui/RainbowButton";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 
@@ -56,8 +56,7 @@ export default function Navbar() {
           <div className="hidden items-center space-x-4 md:flex">
             <Button
               variant="ghost"
-              className="text-white/80 hover:text-white hover:bg-white/10"
-              onClick={() => showAuthModal()}
+              className="text-white/80 hover:text-white hover:bg-white/10 cursor-pointer"
             >
               Sign Up
             </Button>
@@ -95,13 +94,6 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Pricing
-                </Link>
-                <Link
-                  href="/#testimonials"
-                  className="text-sm text-white/80 hover:text-white transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Testimonials
                 </Link>
                 <hr className="border-white/20" />
                 <Button

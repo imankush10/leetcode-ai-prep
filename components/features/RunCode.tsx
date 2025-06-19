@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { Play, Loader2 } from 'lucide-react';
 import { useInterviewStore } from '@/store/interviewStore';
 

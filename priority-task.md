@@ -1,12 +1,10 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" class="logo" width="120"/>
-
 # 🚀 **AI INTERVIEW PLATFORM - PRIORITY-BASED TASK LIST**
 
 ## **PHASE 1: FOUNDATION \& DEMO (Weeks 1-2)**
 
 ### **Week 1: Core Infrastructure**
 
-- [ ] **1.1** Build basic landing page with hero section and value proposition
+- [x] **1.1** Build basic landing page with hero section and value proposition
 - [ ] **1.2** Create demo section with choice: "Try LeetCode Interview" or "Try System Design Interview"
 - [ ] **1.3** Set up basic routing and navigation structure
 - [ ] **1.4** Implement 5-minute timer for demo sessions

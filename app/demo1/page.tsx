@@ -2,16 +2,16 @@
 
 import React, { useEffect } from "react";
 import { useInterviewStore } from "@/store/interviewStore";
-import { ProblemDescription } from "@/components/ProblemDescription";
-import { CodeEditor } from "@/components/CodeEditor";
-import { LanguageSelector } from "@/components/LanguageSelector";
-import { TestCases } from "@/components/TestCases";
-import { AIAvatar } from "@/components/AIAvatar";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { RunCode } from "@/components/RunCode";
+import { ProblemDescription } from "@/components/features/ProblemDescription";
+import { CodeEditor } from "@/components/features/CodeEditor";
+import { LanguageSelector } from "@/components/features/LanguageSelector";
+import { TestCases } from "@/components/features/TestCases";
+import { AIAvatar } from "@/components/features/AIAvatar";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { RunCode } from "@/components/features/RunCode";
 
 import { PanelGroup, Panel, PanelResizeHandle } from "react-resizable-panels";
-import { Timer } from "@/components/Timer";
+import { Timer } from "@/components/features/Timer";
 
 export default function Page() {
   const { problem, fetchRandomProblem, isLoadingProblem, testResults } = useInterviewStore();

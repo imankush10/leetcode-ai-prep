@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Code, Brain, Zap } from "lucide-react";
-import InteractiveCodeEditor from "./InteractiveCodeEditor";
-import LiveAnalysis from "./LiveAnalysis";
-import InterviewRecording from "./InterviewRecording";
+import InteractiveCodeEditor from "../features/InteractiveCodeEditor";
+import LiveAnalysis from "../features/LiveAnalysis";
+import InterviewRecording from "../features/InterviewRecording";
 
 const CarouselFeatures = () => {
   const [activeFeature, setActiveFeature] = useState(0);

@@ -239,6 +239,7 @@ export default function FeaturesSection() {
 
   return (
     <section
+      id="features"
       ref={containerRef}
       className="relative bg-black overflow-hidden"
     >

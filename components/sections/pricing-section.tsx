@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Check, Sparkles, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Button } from "../ui/button";
+import { Switch } from "../ui/switch";
 import { motion } from "framer-motion";
 
 function FloatingPricingElements() {

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useInterviewStore } from "@/store/interviewStore";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs";
 import { Check, X } from "lucide-react";
 
 interface Judge0TestResult {
