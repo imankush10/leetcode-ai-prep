@@ -209,7 +209,7 @@ export default function HeroSection() {
             whileTap={{ scale: 0.98 }}
             className="group"
           >
-            <RainbowButton href="/" className="">
+            <RainbowButton href="https://interviewprep-pink.vercel.app/sign-in" className="">
               Start Free Interview
             </RainbowButton>
           </motion.div>
