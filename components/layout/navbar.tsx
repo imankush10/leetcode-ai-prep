@@ -28,28 +28,6 @@ export default function Navbar() {
               </div>
               <span className="text-xl font-bold text-white">OnLevel</span>
             </Link>
-
-            {/* Navigation Links - Desktop */}
-            <div className="hidden items-center space-x-6 md:flex">
-              <Link
-                href="/#features"
-                className="text-sm text-white/80 hover:text-white transition-colors"
-              >
-                Features
-              </Link>
-              <Link
-                href="/#pricing"
-                className="text-sm text-white/80 hover:text-white transition-colors"
-              >
-                Pricing
-              </Link>
-              <Link
-                href="/#testimonials"
-                className="text-sm text-white/80 hover:text-white transition-colors"
-              >
-                Testimonials
-              </Link>
-            </div>
           </div>
 
           {/* Right side - Sign Up and Demo Button */}
