@@ -103,7 +103,7 @@ export default function Navbar() {
                 >
                   Sign Up
                 </Button>
-                <RainbowButton className="w-full">
+                <RainbowButton className="w-full" href="https://interviewprep-pink.vercel.app/sign-in">
                   Start Interview
                 </RainbowButton>
               </div>
