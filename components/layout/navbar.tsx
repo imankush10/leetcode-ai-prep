@@ -54,13 +54,13 @@ export default function Navbar() {
 
           {/* Right side - Sign Up and Demo Button */}
           <div className="hidden items-center space-x-4 md:flex">
-            <Button
+{/*             <Button
               variant="ghost"
               className="text-white/80 hover:text-white hover:bg-white/10 cursor-pointer"
             >
               Sign Up
-            </Button>
-            <RainbowButton>Try Free</RainbowButton>
+            </Button> */}
+            <RainbowButton href="https://onlevel-app.vercel.app/sign-in">Try Free</RainbowButton>
           </div>
 
           {/* Mobile Menu Button */}
