@@ -19,8 +19,8 @@ export default function Navbar() {
         <div className="absolute inset-0 backdrop-blur-md rounded-md"></div>
 
         <div className="relative flex h-20 items-center justify-between px-6">
-          {/* Left side - Logo and Navigation Links */}
-          <div className="flex items-center space-x-8">
+          {/* Left side - Logo */}
+          <div className="flex items-center">
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <div className="rounded-md p-1.5">
@@ -30,14 +30,8 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Right side - Sign Up and Demo Button */}
-          <div className="hidden items-center space-x-4 md:flex">
-{/*             <Button
-              variant="ghost"
-              className="text-white/80 hover:text-white hover:bg-white/10 cursor-pointer"
-            >
-              Sign Up
-            </Button> */}
+          {/* Right side - Try Free Button (Desktop) */}
+          <div className="hidden items-center md:flex">
             <RainbowButton href="https://onlevel-app.vercel.app/sign-in">Try Free</RainbowButton>
           </div>
 
@@ -59,30 +53,12 @@ export default function Navbar() {
           <div className="absolute top-full left-0 right-0 mt-2 bg-gradient-to-r from-white/10 via-white/25 to-white/10 backdrop-blur-md rounded-2xl border border-white/10 md:hidden">
             <div className="px-6 py-4">
               <div className="flex flex-col space-y-4">
-                <Link
-                  href="/#features"
-                  className="text-sm text-white/80 hover:text-white transition-colors"
+                <RainbowButton 
+                  className="w-full" 
+                  href="https://onlevel-app.vercel.app/sign-in"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Features
-                </Link>
-                <Link
-                  href="/#pricing"
-                  className="text-sm text-white/80 hover:text-white transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Pricing
-                </Link>
-                <hr className="border-white/20" />
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-white/80 hover:text-white hover:bg-white/10"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Sign Up
-                </Button>
-                <RainbowButton className="w-full" href="https://interviewprep-pink.vercel.app/sign-in">
-                  Start Interview
+                  Try Free
                 </RainbowButton>
               </div>
             </div>
