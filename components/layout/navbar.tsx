@@ -32,7 +32,7 @@ export default function Navbar() {
 
           {/* Right side - Try Free Button (Desktop) */}
           <div className="hidden items-center md:flex">
-            <RainbowButton href="https://onlevel-app.vercel.app/sign-in">Try Free</RainbowButton>
+            <RainbowButton href="https://app.onlevel.imankush.in/sign-in">Try Free</RainbowButton>
           </div>
 
           {/* Mobile Menu Button */}
@@ -55,7 +55,7 @@ export default function Navbar() {
               <div className="flex flex-col space-y-4">
                 <RainbowButton 
                   className="w-full" 
-                  href="https://onlevel-app.vercel.app/sign-in"
+                  href="https://app.onlevel.imankush.in/sign-in"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Try Free
