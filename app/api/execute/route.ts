@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
     }
 
     // --- Code Execution ---
-    const driverCode = languageConfig.driverCode.replace('// {{USER_CODE}}', userCode);
+    const driverCode = languageConfig.driverCode.replace('{{USER_CODE}}', userCode);
     const result = await runCodeOnJudge0(driverCode, languageConfig.judgeLanguageId);
 
     const decodedStdout = safeBase64Decode(result.stdout).trim();
