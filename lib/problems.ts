@@ -1,7 +1,7 @@
 export interface TestCase {
   input: string;
   expectedOutput: string;
-  checkOrder:boolean;
+  checkOrder: boolean;
 }
 
 export interface LanguageConfig {
@@ -21,7 +21,6 @@ export interface Problem {
 }
 
 // ----- Problems -----
-
 export const PROBLEMS_DB: Problem[] = [
   {
     id: "two-sum",
@@ -29,7 +28,7 @@ export const PROBLEMS_DB: Problem[] = [
     description:
       "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
     testCases: [
-      { input: "[2,7,11,15],9", expectedOutput: "[0,1]",checkOrder: false },
+      { input: "[2,7,11,15],9", expectedOutput: "[0,1]", checkOrder: false },
       { input: "[3,2,4],6", expectedOutput: "[1,2]", checkOrder: false },
       { input: "[3,3],6", expectedOutput: "[0,1]", checkOrder: false },
       { input: "[1,2,3,4,5],9", expectedOutput: "[3,4]", checkOrder: false },
@@ -37,25 +36,8 @@ export const PROBLEMS_DB: Problem[] = [
     ],
     languages: {
       cpp: {
-        boilerplate: `/**
- * Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
- *
- * Example:
- * ----------
- * Given nums = [2, 7, 11, 15], target = 9,
- * Because nums[0] + nums[1] = 2 + 7 = 9,
- * return [0, 1].
- *
- * Args:
- *     nums (vector<int>&): A reference to a vector of integers.
- *     target (int): The target sum.
- *
- * Returns:
- *     vector<int>: A vector containing two indices.
- */
-vector<int> twoSum(vector<int>& nums, int target) {
-    // Your code here
-}`,
+        boilerplate: `vector<int> twoSum(vector<int>& nums, int target) {\n    // Your code here\n}`,
+        // 🔑 FIXED: Universal placeholder
         driverCode: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -63,142 +45,84 @@ using namespace std;
 
 int main() {
     vector<vector<int>> inputs = {
-        {2, 7, 11, 15},
-        {3, 2, 4},
-        {3, 3},
-        {1, 2, 3, 4, 5},
-        {-1, -2, -3, -4, -5}
+        {2, 7, 11, 15}, {3, 2, 4}, {3, 3}, {1, 2, 3, 4, 5}, {-1, -2, -3, -4, -5}
     };
     vector<int> targets = {9, 6, 6, 9, -8};
     
     cout << "[";
     for (int i = 0; i < inputs.size(); ++i) {
         vector<int> res = twoSum(inputs[i], targets[i]);
+        sort(res.begin(), res.end()); // Sort for consistent output
         cout << "[" << res[0] << "," << res[1] << "]";
-        if (i < inputs.size() - 1) {
-            cout << ",";
-        }
+        if (i < inputs.size() - 1) cout << ",";
     }
-    cout << "]"; // Removed endl - this was causing JSON parsing issues
-    
+    cout << "]";
     return 0;
 }`,
         judgeLanguageId: 54,
       },
       python: {
-        boilerplate: `def twoSum(nums, target):
-    """
-    Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
-
-    Example:
-    ----------
-    Given nums = [2, 7, 11, 15], target = 9,
-    Because nums[0] + nums[1] = 2 + 7 = 9,
-    return [0, 1].
-
-    Args:
-        nums (List[int]): A list of integers.
-        target (int): The target sum.
-
-    Returns:
-        List[int]: A list containing two indices.
-    """
-    # Your code here
-    pass`,
+        boilerplate: `def twoSum(nums, target):\n    # Your code here\n    pass`,
+        // 🔑 FIXED: Universal placeholder
         driverCode: `import json
 
 {{USER_CODE}}
 
-test_cases = [
-    ([2,7,11,15], 9),
-    ([3,2,4], 6),
-    ([3,3], 6),
-    ([1,2,3,4,5], 9),
-    ([-1,-2,-3,-4,-5], -8)
-]
-results = []
-for nums, target in test_cases:
-    results.append(twoSum(nums, target))
-print(json.dumps(results))`,
+def main():
+    test_cases = [
+        ([2,7,11,15], 9), ([3,2,4], 6), ([3,3], 6),
+        ([1,2,3,4,5], 9), ([-1,-2,-3,-4,-5], -8)
+    ]
+    results = []
+    for nums, target in test_cases:
+        result = twoSum(nums, target)
+        results.append(sorted(result)) # Sort for consistent output
+    print(json.dumps(results))
+
+main()`,
         judgeLanguageId: 71,
       },
       javascript: {
-        boilerplate: `/**
- * Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
- *
- * Example:
- * ----------
- * Given nums = [2, 7, 11, 15], target = 9,
- * Because nums[0] + nums[1] = 2 + 7 = 9,
- * return [0, 1].
- *
- * @param {number[]} nums - An array of integers.
- * @param {number} target - The target sum.
- * @returns {number[]} An array containing two indices.
- */
-function twoSum(nums, target) {
-  // Your code here
-}`,
+        boilerplate: `function twoSum(nums, target) {\n  // Your code here\n}`,
+        // 🔑 FIXED: Universal placeholder
         driverCode: `{{USER_CODE}}
 
 const testCases = [
-  [[2,7,11,15], 9],
-  [[3,2,4], 6],
-  [[3,3], 6],
-  [[1,2,3,4,5], 9],
-  [[-1,-2,-3,-4,-5], -8]
+  [[2,7,11,15], 9], [[3,2,4], 6], [[3,3], 6],
+  [[1,2,3,4,5], 9], [[-1,-2,-3,-4,-5], -8]
 ];
+
 const results = testCases.map(([nums, target]) => {
-    return twoSum(nums, target);
+    const result = twoSum(nums, target);
+    return result.sort((a, b) => a - b); // Sort for consistent output
 });
+
 console.log(JSON.stringify(results));`,
         judgeLanguageId: 63,
       },
       java: {
-        boilerplate: `/**
- * Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
- *
- * Example:
- * ----------
- * Given nums = [2, 7, 11, 15], target = 9,
- * Because nums[0] + nums[1] = 2 + 7 = 9,
- * return [0, 1].
- *
- * Args:
- *     nums (int[]): An array of integers.
- *     target (int): The target sum.
- *
- * Returns:
- *     int[]: An array of two indices.
- */
-public int[] twoSum(int[] nums, int target) {
-    // Your code here
-}`,
+        boilerplate: `class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // Your code here\n    }\n}`,
+        // 🔑 FIXED: Universal placeholder and class structure
         driverCode: `import java.util.*;
 
-class Main {  // Changed from Solution to Main
+// The user's code will be injected here. It should contain the Solution class.
 {{USER_CODE}}
-    
+
+class Main {
     public static void main(String[] args) {
-        Main solution = new Main();  // Changed from Solution to Main
+        Solution solution = new Solution();
         int[][] inputs = {
-            {2, 7, 11, 15},
-            {3, 2, 4},
-            {3, 3},
-            {1, 2, 3, 4, 5},
-            {-1, -2, -3, -4, -5}
+            {2, 7, 11, 15}, {3, 2, 4}, {3, 3}, {1, 2, 3, 4, 5}, {-1, -2, -3, -4, -5}
         };
         int[] targets = {9, 6, 6, 9, -8};
         
-        System.out.print("[");
+        List<String> results = new ArrayList<>();
         for (int i = 0; i < inputs.length; ++i) {
             int[] res = solution.twoSum(inputs[i], targets[i]);
-            System.out.print("[" + res[0] + "," + res[1] + "]");
-            if (i < inputs.length - 1) {
-                System.out.print(",");
-            }
+            Arrays.sort(res); // Sort for consistent output
+            results.add("[" + res[0] + "," + res[1] + "]");
         }
-        System.out.print("]");  // Changed from println to print to avoid extra newline
+        System.out.print("[" + String.join(",", results) + "]");
     }
 }`,
         judgeLanguageId: 62,
@@ -207,11 +131,7 @@ class Main {  // Changed from Solution to Main
   },
 ];
 
-export function getRandomProblem(): Problem {
-  const randomIndex = Math.floor(Math.random() * PROBLEMS_DB.length);
-  return PROBLEMS_DB[randomIndex];
-}
-
+// Functions to get problems
 export function getProblemById(id: string): Problem | undefined {
   return PROBLEMS_DB.find((problem) => problem.id === id);
 }
