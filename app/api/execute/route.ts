@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProblemById } from '@/lib/problems'; // Assuming this function fetches your problem data
+import { getProblemById } from '@/lib/problems'; // Make sure this path is correct
 
 // --- Interfaces for Clarity ---
 interface TestCase {
   input: any;
-  expectedOutput: string; // Stored as a JSON string
+  expectedOutput: string;
   checkOrder?: boolean;
 }
 
@@ -57,61 +57,42 @@ function safeBase64Decode(encodedString: string | null): string {
   try {
     return Buffer.from(encodedString, 'base64').toString('utf-8');
   } catch (error) {
-    // If decoding fails, return the original string for inspection
     return encodedString;
   }
 }
 
-/**
- * 🔑 Robust, recursive comparison function for deep equality.
- * Handles nested objects and arrays, with an option for order-insensitive array comparison.
- * @param actual - The actual output from user code (parsed JSON).
- * @param expected - The expected output from test case (parsed JSON).
- * @param checkOrder - If true, array elements must be in the same order.
- * @returns {boolean} - True if outputs are considered equal.
- */
 function compareOutputs(actual: any, expected: any, checkOrder: boolean = true): boolean {
-  // Strict equality for primitives
   if (actual === expected) return true;
-
-  // Different types or one is null, they can't be equal
   if (typeof actual !== 'object' || typeof expected !== 'object' || actual === null || expected === null) {
     return false;
   }
 
-  // Array comparison
   if (Array.isArray(actual) && Array.isArray(expected)) {
     if (actual.length !== expected.length) return false;
 
     if (checkOrder) {
-      // Order matters: check each element recursively
       for (let i = 0; i < actual.length; i++) {
         if (!compareOutputs(actual[i], expected[i], true)) return false;
       }
     } else {
-      // Order doesn't matter: use a frequency map for robust comparison of objects/primitives
       const actualMap = new Map();
       for (const item of actual) {
-        const key = JSON.stringify(item); // Use stringify to handle objects as keys
+        const key = JSON.stringify(item);
         actualMap.set(key, (actualMap.get(key) || 0) + 1);
       }
 
       for (const item of expected) {
         const key = JSON.stringify(item);
-        if (!actualMap.has(key) || actualMap.get(key) === 0) {
-          return false;
-        }
+        if (!actualMap.has(key) || actualMap.get(key) === 0) return false;
         actualMap.set(key, actualMap.get(key) - 1);
       }
     }
     return true;
   }
 
-  // Object comparison
   if (!Array.isArray(actual) && !Array.isArray(expected)) {
     const keysActual = Object.keys(actual);
     const keysExpected = Object.keys(expected);
-
     if (keysActual.length !== keysExpected.length) return false;
 
     for (const key of keysActual) {
@@ -128,15 +109,19 @@ function compareOutputs(actual: any, expected: any, checkOrder: boolean = true):
 // --- API Route Handler ---
 export async function POST(request: NextRequest) {
   try {
-    const { problemId, language, userCode } = await request.json();
+    // We only need language and userCode from the client now
+    const { language, userCode } = await request.json();
 
-    if (!problemId || !language || !userCode) {
-      return NextResponse.json({ success: false, error: 'Missing required fields: problemId, language, or userCode' }, { status: 400 });
+    if (!language || !userCode) {
+      return NextResponse.json({ success: false, error: 'Missing required fields: language or userCode' }, { status: 400 });
     }
 
-    const problem: Problem | undefined = getProblemById(problemId);
+    // 🔑 Always fetch the "two-sum" problem, ignoring any problemId from the client
+    const problem: Problem | undefined = getProblemById('two-sum');
+
+    // Still good practice to check if the problem was actually found
     if (!problem) {
-      return NextResponse.json({ success: false, error: `Problem with ID '${problemId}' not found` }, { status: 404 });
+        return NextResponse.json({ success: false, error: "Default problem 'two-sum' could not be found in problems-db.ts" }, { status: 500 });
     }
 
     const languageConfig = problem.languages[language];
@@ -145,6 +130,7 @@ export async function POST(request: NextRequest) {
     }
 
     // --- Code Execution ---
+    // 🔑 Use the universal placeholder for replacement
     const driverCode = languageConfig.driverCode.replace('{{USER_CODE}}', userCode);
     const result = await runCodeOnJudge0(driverCode, languageConfig.judgeLanguageId);
 
@@ -168,7 +154,7 @@ export async function POST(request: NextRequest) {
 
     // --- Output Parsing and Comparison ---
     try {
-      const outputs = JSON.parse(decodedStdout); // Expecting an array of outputs
+      const outputs = JSON.parse(decodedStdout);
       if (!Array.isArray(outputs)) {
         throw new Error("Expected an array of results from stdout.");
       }
@@ -196,7 +182,7 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error: any) {
-    console.error("Internal Server Error:", error); // Log the actual error on the server
+    console.error("Internal Server Error:", error);
     return NextResponse.json(
       { success: false, error: error.message || 'An unexpected internal server error occurred.' },
       { status: 500 }
