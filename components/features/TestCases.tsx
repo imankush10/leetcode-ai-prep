@@ -6,9 +6,10 @@ import { Check, X } from "lucide-react";
 interface Judge0TestResult {
   input: string;
   expectedOutput: string;
-  result: "pass" | "fail";
+  result: "pass" | "fail" | "running";
   output: string | null;
 }
+
 
 export function TestCases() {
   const { problem, selectedTestCase, setSelectedTestCase, testResults } =
@@ -68,15 +69,27 @@ export function TestCases() {
                           className={`inline-flex items-center ${
                             testResult.result === "pass"
                               ? "text-green-500"
-                              : "text-red-500"
+                              : testResult.result === "fail"
+                              ? "text-red-500"
+                              : "text-muted-foreground"
                           }`}
                         >
                           {testResult.result === "pass" ? (
-                            <Check size={16} className="mr-1" />
+                            <>
+                              <Check size={16} className="mr-1" />
+                              Passed
+                            </>
+                          ) : testResult.result === "fail" ? (
+                            <>
+                              <X size={16} className="mr-1" />
+                              Failed
+                            </>
                           ) : (
-                            <X size={16} className="mr-1" />
+                            <>
+                              <span className="animate-spin rounded-full h-3 w-3 border-b-2 border-muted-foreground mr-2" />
+                              Running...
+                            </>
                           )}
-                          {testResult.result}
                         </span>
                       )}
                     </div>
